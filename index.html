@@ -1,202 +1,149 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hoperty - Reservas</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: transparent;
-      color: #1c3c4c;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-    }
-    .search-bar {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 20px;
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
-      width: 90%;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      flex: 1;
-    }
-    input, select {
-      padding: 16px 16px 16px 50px;
-      border: 1px solid #1c3c4c;
-      border-radius: 8px;
-      font-size: 16px;
-      color: #1c3c4c;
-      width: 100%;
-    }
-    #guestsDisplay {
-      background: url('https://cdn-icons-png.flaticon.com/512/747/747376.png') no-repeat 16px center;
-      background-size: 20px 20px;
-      cursor: pointer;
-    }
-    .guests-popup {
-      display: none;
-      position: absolute;
-      top: 40px;
-      left: 0;
-      background: #fff;
-      border: 1px solid #1c3c4c;
-      border-radius: 8px;
-      padding: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 999;
-      width: 100%;
-      max-width: 300px;
-    }
-    .guests-popup .controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-    .guests-popup button {
-      border: 1px solid #1c3c4c;
-      background: none;
-      font-size: 16px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .guests-popup .ok-btn {
-      width: 100%;
-      background-color: #1c3c4c;
-      color: white;
-      padding: 8px;
-      font-size: 16px;
-      margin-top: 8px;
-      border: none;
-      cursor: pointer;
-    }
-    button.search {
-      padding: 16px 32px;
-      background-color: #1c3c4c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    iframe {
-      border: none;
-      width: 100%;
-      height: 1400px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoperty | Reservas</title>
+ <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: transparent; /* fundo transparente */
+    color: #1c3c4c;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.9); /* leve transparência */
+    border-radius: 20px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #1c3c4c;
+  }
+
+  p {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #3c5a68;
+  }
+
+  iframe {
+    width: 100%;
+    height: 1200px;
+    border: none;
+    border-radius: 12px;
+  }
+   .header-reserva {
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease-out;
+}
+
+.resumo-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.campo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c3c4c;
+}
+
+.campo img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Animação */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
 </head>
 <body>
-  <form class="search-bar">
-    <input type="hidden" id="guestsHidden" value="2" />
-    <div class="form-group">
-      <select id="location">
-        <option value="">Localização</option>
-        <option value="Funchal">Funchal</option>
-        <option value="Santa Cruz">Santa Cruz</option>
-        <option value="Machico">Machico</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <input type="text" id="checkin" placeholder="Check-In" class="icon-calendar" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <input type="text" id="checkout" placeholder="Check-Out" class="icon-calendar" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <input type="text" id="guestsDisplay" value="2" readonly />
-      <div id="guestsPopup" class="guests-popup">
-        <div class="controls">
-          <button type="button" id="minusBtn">-</button>
-          <span id="countSpan">2</span>
-          <button type="button" id="plusBtn">+</button>
-        </div>
-        <button type="button" class="ok-btn" id="okBtn">OK</button>
-      </div>
-    </div>
-    <button type="button" class="search" onclick="enviarPesquisa()">Procurar</button>
-  </form>
+  <div class="container">
+    <h1>Resultados da Pesquisa</h1>
+    <p id="resumo"></p>
+    <iframe id="reservaHoperty" src=""></iframe>
+  </div>
 
-  <iframe id="reservaHoperty"></iframe>
-
-  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
   <script>
-    // 📅 Calendário
-    new Litepicker({
-      element: document.getElementById('checkin'),
-      elementEnd: document.getElementById('checkout'),
-      singleMode: false,
-      format: 'YYYY-MM-DD',
-      numberOfMonths: 2,
-      numberOfColumns: 2
-    });
-
-    // 👥 Hóspedes
-    let guestsCount = 2;
-    const guestsDisplay = document.getElementById("guestsDisplay");
-    const guestsHidden = document.getElementById("guestsHidden");
-    const guestsPopup = document.getElementById("guestsPopup");
-    const countSpan = document.getElementById("countSpan");
-
-    guestsDisplay.addEventListener('click', () => guestsPopup.style.display = 'block');
-    document.getElementById("minusBtn").onclick = () => {
-      if (guestsCount > 1) {
-        guestsCount--;
-        countSpan.textContent = guestsCount;
-      }
-    };
-    document.getElementById("plusBtn").onclick = () => {
-      guestsCount++;
-      countSpan.textContent = guestsCount;
-    };
-    document.getElementById("okBtn").onclick = () => {
-      guestsPopup.style.display = 'none';
-      guestsDisplay.value = guestsCount;
-      guestsHidden.value = guestsCount;
-    };
-
-    // 🔍 Enviar pesquisa
-    function enviarPesquisa() {
-      const location = document.getElementById("location").value;
-      const guests = guestsHidden.value;
-      const checkin = document.getElementById("checkin").value;
-      const checkout = document.getElementById("checkout").value;
-
-      const group = location ? `&group=${location}` : "";
-      const src = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}${group}`;
-
-      document.getElementById("reservaHoperty").src = src;
-    }
-
-    // 🚀 Carrega automaticamente a pesquisa se houver parâmetros na URL
-    window.onload = () => {
+    document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
-      document.getElementById("location").value = params.get("location") || "";
-      document.getElementById("guestsHidden").value = params.get("guests") || "2";
-      document.getElementById("guestsDisplay").value = params.get("guests") || "2";
-      document.getElementById("checkin").value = params.get("checkin") || "";
-      document.getElementById("checkout").value = params.get("checkout") || "";
-      enviarPesquisa();
-    }
+      const location = params.get("location") || "";
+      const guests = params.get("guests") || "2";
+      const checkin = params.get("checkin") || "";
+      const checkout = params.get("checkout") || "";
+
+      const url = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
+      document.getElementById("reservaHoperty").src = url;
+
+      document.getElementById("resumo").innerText = `Localização: ${location} · Hóspedes: ${guests} · Check-In: ${checkin || "-"} · Check-Out: ${checkout || "-"}`;
+    });
   </script>
 </body>
+  <div class="header-reserva" id="headerReserva">
+  <div class="resumo-box fade-in">
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="location" />
+      <span id="campoLocation">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="check-in" />
+      <span id="campoCheckin">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="check-out" />
+      <span id="campoCheckout">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="adultos" />
+      <span id="campoAdultos">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="crianças" />
+      <span id="campoCriancas">0</span>
+    </div>
+  </div>
+</div>
+
 </html>
