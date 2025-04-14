@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hoperty | Reservas</title>
   <style>
     * {
@@ -13,115 +13,150 @@
 
     html, body {
       font-family: 'Open Sans', sans-serif;
-      background-color: transparent;
+      background: linear-gradient(to bottom, #f4f9fb, #ffffff);
       color: #1c3c4c;
     }
 
     .container {
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 120px auto 40px auto;
       padding: 40px 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #1c3c4c;
+    }
+
+    p {
+      margin-bottom: 30px;
+      font-size: 16px;
+      color: #3c5a68;
     }
 
     iframe {
       width: 100%;
       height: 1200px;
       border: none;
-      border-radius: 12px;
+      border-radius: 16px;
     }
 
     .header-reserva {
       width: 100%;
-      padding: 24px;
-      margin: 40px auto 30px auto;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+      padding: 20px 10px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .resumo-box {
+      display: flex;
       flex-wrap: wrap;
-      background-color: #fff;
-      border-radius: 20px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.1);
-      max-width: 1200px;
+      justify-content: center;
+      gap: 30px;
+      align-items: center;
+      max-width: 1100px;
+      width: 100%;
     }
 
     .campo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 14px;
+      gap: 8px;
+      font-size: 15px;
       font-weight: 600;
       color: #1c3c4c;
-      background-color: #f9f9f9;
+      background-color: #eef6f8;
+      padding: 10px 16px;
       border-radius: 12px;
-      padding: 12px 16px;
-      flex: 1;
-      min-width: 150px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .campo img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
     }
 
-    .botao-procurar {
-      padding: 16px 28px;
-      background-color: #1c3c4c;
-      color: #fff;
-      font-size: 14px;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      white-space: nowrap;
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.2s;
     }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
   </style>
 </head>
 <body>
 
-  <div class="header-reserva">
-    <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Localização" />
-      <span id="campoLocation">-</span>
+  <div class="header-reserva" id="headerReserva">
+    <div class="resumo-box fade-in">
+      <div class="campo">
+        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="localização" />
+        <span id="campoLocation">-</span>
+      </div>
+      <div class="campo">
+        <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="check-in" />
+        <span id="campoCheckin">-</span>
+      </div>
+      <div class="campo">
+        <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="check-out" />
+        <span id="campoCheckout">-</span>
+      </div>
+      <div class="campo">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="adultos" />
+        <span id="campoAdultos">-</span>
+      </div>
+      <div class="campo">
+        <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="crianças" />
+        <span id="campoCriancas">0</span>
+      </div>
     </div>
-    <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="Check-In" />
-      <span id="campoCheckin">-</span>
-    </div>
-    <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Check-Out" />
-      <span id="campoCheckout">-</span>
-    </div>
-    <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Hóspedes" />
-      <span id="campoHospedes">-</span>
-    </div>
-    <button class="botao-procurar">Procurar</button>
   </div>
 
   <div class="container">
+    <h1>Resultados da Pesquisa</h1>
+    <p id="resumo"></p>
     <iframe id="reservaHoperty" src=""></iframe>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
-      const location = params.get("location") || "-";
-      const guests = parseInt(params.get("guests")) || 2;
-      const checkin = params.get("checkin") || "-";
-      const checkout = params.get("checkout") || "-";
+      const location = params.get("location") || "";
+      const guests = params.get("guests") || "2";
+      const checkin = params.get("checkin") || "";
+      const checkout = params.get("checkout") || "";
+      const criancas = params.get("children") || "0";
 
-      const adultos = guests > 2 ? guests - 1 : guests;
-      const criancas = guests > 2 ? 1 : 0;
+      const url = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
+      document.getElementById("reservaHoperty").src = url;
 
-      document.getElementById("campoLocation").textContent = location;
-      document.getElementById("campoCheckin").textContent = checkin;
-      document.getElementById("campoCheckout").textContent = checkout;
-      document.getElementById("campoHospedes").textContent = guests;
+      document.getElementById("resumo").innerText =
+        `Localização: ${location} · Hóspedes: ${guests} · Check-In: ${checkin || "-"} · Check-Out: ${checkout || "-"}`;
 
-      const iframeUrl = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
-      document.getElementById("reservaHoperty").src = iframeUrl;
+      document.getElementById("campoLocation").innerText = location || "-";
+      document.getElementById("campoCheckin").innerText = checkin || "-";
+      document.getElementById("campoCheckout").innerText = checkout || "-";
+      document.getElementById("campoAdultos").innerText = guests || "-";
+      document.getElementById("campoCriancas").innerText = criancas || "0";
     });
   </script>
 </body>
