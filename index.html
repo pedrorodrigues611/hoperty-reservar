@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoperty | Reservas</title>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 40px;
+      color: #1c3c4c;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 30px;
+      font-size: 16px;
+      color: #3c5a68;
+    }
+
+    iframe {
+      width: 100%;
+      height: 1200px;
+      border: none;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Resultados da Pesquisa</h1>
+    <p id="resumo"></p>
+    <iframe id="reservaHoperty" src=""></iframe>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const location = params.get("location") || "";
+      const guests = params.get("guests") || "2";
+      const checkin = params.get("checkin") || "";
+      const checkout = params.get("checkout") || "";
+
+      const url = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
+      document.getElementById("reservaHoperty").src = url;
+
+      document.getElementById("resumo").innerText = `Localização: ${location} · Hóspedes: ${guests} · Check-In: ${checkin || "-"} · Check-Out: ${checkout || "-"}`;
+    });
+  </script>
+</body>
+</html>
