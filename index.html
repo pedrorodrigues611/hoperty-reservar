@@ -13,152 +13,116 @@
 
     html, body {
       font-family: 'Open Sans', sans-serif;
-      background-color: #f8f9fa;
+      background-color: transparent;
       color: #1c3c4c;
     }
 
     .container {
       max-width: 1200px;
-      margin: 160px auto 40px auto;
+      margin: 0 auto;
       padding: 40px 20px;
-      background: #ffffff;
-      border-radius: 32px;
-      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.08);
-    }
-
-    h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      font-weight: 700;
-      color: #1c3c4c;
-      text-align: center;
-    }
-
-    p {
-      margin-bottom: 30px;
-      font-size: 16px;
-      color: #3c5a68;
-      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
     }
 
     iframe {
       width: 100%;
       height: 1200px;
       border: none;
-      border-radius: 20px;
+      border-radius: 12px;
     }
 
     .header-reserva {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background-color: #ffffffee;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      z-index: 999;
-      backdrop-filter: blur(10px);
-    }
-
-    .resumo-box {
+      width: 100%;
+      padding: 24px;
+      margin: 40px auto 30px auto;
       display: flex;
+      justify-content: space-between;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+      max-width: 1200px;
     }
 
     .campo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: #1c3c4c;
-      background-color: #f1f5f9;
-      padding: 10px 16px;
+      background-color: #f9f9f9;
       border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 12px 16px;
+      flex: 1;
+      min-width: 150px;
     }
 
     .campo img {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
     }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeInUp 0.8s ease-out;
+    .botao-procurar {
+      padding: 16px 28px;
+      background-color: #1c3c4c;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      white-space: nowrap;
     }
   </style>
 </head>
 <body>
 
-<div class="header-reserva fade-in" id="headerReserva">
-  <div class="resumo-box">
+  <div class="header-reserva">
     <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="location" />
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Localização" />
       <span id="campoLocation">-</span>
     </div>
     <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="check-in" />
+      <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="Check-In" />
       <span id="campoCheckin">-</span>
     </div>
     <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="check-out" />
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Check-Out" />
       <span id="campoCheckout">-</span>
     </div>
     <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="adultos" />
-      <span id="campoAdultos">-</span>
+      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Hóspedes" />
+      <span id="campoHospedes">-</span>
     </div>
-    <div class="campo">
-      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="crianças" />
-      <span id="campoCriancas">0</span>
-    </div>
+    <button class="botao-procurar">Procurar</button>
   </div>
-</div>
 
-<div class="container">
-  <h1>Resultados da Pesquisa</h1>
-  <p id="resumo"></p>
-  <iframe id="reservaHoperty" src=""></iframe>
-</div>
+  <div class="container">
+    <iframe id="reservaHoperty" src=""></iframe>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const location = params.get("location") || "-";
-    const guests = parseInt(params.get("guests")) || 2;
-    const checkin = params.get("checkin") || "-";
-    const checkout = params.get("checkout") || "-";
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const params = new URLSearchParams(window.location.search);
+      const location = params.get("location") || "-";
+      const guests = parseInt(params.get("guests")) || 2;
+      const checkin = params.get("checkin") || "-";
+      const checkout = params.get("checkout") || "-";
 
-    const adultos = guests > 2 ? guests - 1 : guests;
-    const criancas = guests > 2 ? 1 : 0;
+      const adultos = guests > 2 ? guests - 1 : guests;
+      const criancas = guests > 2 ? 1 : 0;
 
-    document.getElementById("campoLocation").textContent = location;
-    document.getElementById("campoCheckin").textContent = checkin;
-    document.getElementById("campoCheckout").textContent = checkout;
-    document.getElementById("campoAdultos").textContent = adultos;
-    document.getElementById("campoCriancas").textContent = criancas;
+      document.getElementById("campoLocation").textContent = location;
+      document.getElementById("campoCheckin").textContent = checkin;
+      document.getElementById("campoCheckout").textContent = checkout;
+      document.getElementById("campoHospedes").textContent = guests;
 
-    const iframeUrl = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}&hideheader=1`;
-    document.getElementById("reservaHoperty").src = iframeUrl;
-  });
-</script>
-
+      const iframeUrl = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
+      document.getElementById("reservaHoperty").src = iframeUrl;
+    });
+  </script>
 </body>
 </html>
