@@ -1,229 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hoperty | Reservas</title>
-  <style>
-    :root {
-      --cor-principal: #1c3c4c;
-      --cor-secundaria: #3c5a68;
-      --fundo-card: rgba(255, 255, 255, 0.95);
-      --borda-radius: 20px;
-      --sombra: 0 12px 36px rgba(0, 0, 0, 0.08);
-    }
+ <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  html, body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: transparent; /* fundo transparente */
+    color: #1c3c4c;
+  }
 
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: transparent;
-      color: var(--cor-principal);
-    }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.9); /* leve transparência */
+    border-radius: 20px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
+  h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #1c3c4c;
+  }
 
-    .header-reserva {
-      width: 100%;
-      padding: 20px;
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: center;
-      background-color: var(--fundo-card);
-      border-radius: var(--borda-radius);
-      box-shadow: var(--sombra);
-      animation: fadeIn 1s ease-out;
-    }
+  p {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #3c5a68;
+  }
 
-    .resumo-box {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      align-items: center;
-      max-width: 1100px;
-      width: 100%;
-    }
+  iframe {
+    width: 100%;
+    height: 1200px;
+    border: none;
+    border-radius: 12px;
+  }
+   .header-reserva {
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease-out;
+}
 
-    .campo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--cor-principal);
-    }
+.resumo-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  max-width: 1100px;
+  width: 100%;
+}
 
-    .campo img {
-      width: 24px;
-      height: 24px;
-    }
+.campo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c3c4c;
+}
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-      font-weight: 700;
-      color: var(--cor-principal);
-      text-align: center;
-    }
+.campo img {
+  width: 24px;
+  height: 24px;
+}
 
-    p {
-      margin-bottom: 30px;
-      font-size: 16px;
-      color: var(--cor-secundaria);
-      text-align: center;
-    }
+/* Animação */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 0.2s;
+}
 
-    .cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .card-casa {
-      background: var(--fundo-card);
-      border-radius: var(--borda-radius);
-      box-shadow: var(--sombra);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease;
-    }
+</style>
 
-    .card-casa:hover {
-      transform: scale(1.02);
-    }
-
-    .imagem-casa {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .info-casa {
-      padding: 20px;
-      flex: 1;
-    }
-
-    .info-casa h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: var(--cor-principal);
-    }
-
-    .info-casa p {
-      font-size: 14px;
-      color: var(--cor-secundaria);
-      margin-bottom: 15px;
-    }
-
-    .botao-reservar {
-      background-color: var(--cor-principal);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-
-    .botao-reservar:hover {
-      background-color: #2a5469;
-    }
-
-    iframe {
-      width: 100%;
-      height: 1000px;
-      border: none;
-      border-radius: 12px;
-      margin-top: 40px;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeInUp 1s ease forwards;
-    }
-  </style>
 </head>
 <body>
-
-  <div class="header-reserva" id="headerReserva">
-    <div class="resumo-box fade-in">
-      <div class="campo">
-        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="localização" />
-        <span id="campoLocation">-</span>
-      </div>
-      <div class="campo">
-        <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="check-in" />
-        <span id="campoCheckin">-</span>
-      </div>
-      <div class="campo">
-        <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="check-out" />
-        <span id="campoCheckout">-</span>
-      </div>
-      <div class="campo">
-        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="adultos" />
-        <span id="campoAdultos">-</span>
-      </div>
-      <div class="campo">
-        <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="crianças" />
-        <span id="campoCriancas">0</span>
-      </div>
-    </div>
-  </div>
-
   <div class="container">
-    <h1>Explore as nossas casas</h1>
+    <h1>Resultados da Pesquisa</h1>
     <p id="resumo"></p>
-
-    <div class="cards-container">
-      <div class="card-casa">
-        <img class="imagem-casa" src="https://via.placeholder.com/400x200?text=Casa+1" alt="Casa 1">
-        <div class="info-casa">
-          <h2>Casa Encanto da Serra</h2>
-          <p>Vista deslumbrante, arquitetura madeirense e piscina infinita. Ideal para casais.</p>
-          <a href="#reservaHoperty" class="botao-reservar">Reservar</a>
-        </div>
-      </div>
-
-      <div class="card-casa">
-        <img class="imagem-casa" src="https://via.placeholder.com/400x200?text=Casa+2" alt="Casa 2">
-        <div class="info-casa">
-          <h2>Casa Vista Atlântica</h2>
-          <p>Localização privilegiada com varanda panorâmica e acesso direto ao mar.</p>
-          <a href="#reservaHoperty" class="botao-reservar">Reservar</a>
-        </div>
-      </div>
-
-      <div class="card-casa">
-        <img class="imagem-casa" src="https://via.placeholder.com/400x200?text=Casa+3" alt="Casa 3">
-        <div class="info-casa">
-          <h2>Refúgio da Laurissilva</h2>
-          <p>Imersa na natureza, esta casa oferece conforto e sossego absoluto.</p>
-          <a href="#reservaHoperty" class="botao-reservar">Reservar</a>
-        </div>
-      </div>
-    </div>
-
     <iframe id="reservaHoperty" src=""></iframe>
   </div>
 
@@ -235,16 +114,36 @@
       const checkin = params.get("checkin") || "";
       const checkout = params.get("checkout") || "";
 
-      const url = `https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location}`;
+      const url = https://beds24.com/booking2.php?ownerid=141141&guests=${guests}&checkin=${checkin}&checkout=${checkout}&group=${location};
       document.getElementById("reservaHoperty").src = url;
 
-      document.getElementById("resumo").innerText = `Localização: ${location} · Hóspedes: ${guests} · Check-In: ${checkin || "-"} · Check-Out: ${checkout || "-"}`;
-
-      document.getElementById("campoLocation").innerText = location || "-";
-      document.getElementById("campoCheckin").innerText = checkin || "-";
-      document.getElementById("campoCheckout").innerText = checkout || "-";
-      document.getElementById("campoAdultos").innerText = guests || "-";
+      document.getElementById("resumo").innerText = Localização: ${location} · Hóspedes: ${guests} · Check-In: ${checkin || "-"} · Check-Out: ${checkout || "-"};
     });
   </script>
 </body>
+  <div class="header-reserva" id="headerReserva">
+  <div class="resumo-box fade-in">
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="location" />
+      <span id="campoLocation">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" alt="check-in" />
+      <span id="campoCheckin">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="check-out" />
+      <span id="campoCheckout">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="adultos" />
+      <span id="campoAdultos">-</span>
+    </div>
+    <div class="campo">
+      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="crianças" />
+      <span id="campoCriancas">0</span>
+    </div>
+  </div>
+</div>
+
 </html>
