@@ -1,19 +1,34 @@
+const API_KEY = import.meta.env.VITE_BEDS24_API_KEY;
+
 export async function fetchProperties({ location, guests, checkin, checkout }) {
-  const res = await fetch("/api/reservas", {
+  const response = await fetch("https://api.beds24.com/json/getProperties", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ location, guests, checkin, checkout }),
+    body: JSON.stringify({
+      authentication: {
+        apiKey: API_KEY,
+      },
+      parameters: {
+        location,
+        guests,
+        checkin,
+        checkout,
+        includeRooms: true,
+      },
+    }),
   });
 
-  const text = await res.text();  // <- ler como texto
-  console.log("🔍 Resposta crua da API:", text);
+  // 👇 VERIFICAR O QUE VEM DA API
+  const text = await response.text();
+  console.log("📦 Resposta da API (raw):", text);
 
   try {
-    return JSON.parse(text).properties || [];
-  } catch (err) {
-    console.error("❌ Erro ao converter JSON:", err);
+    const json = JSON.parse(text);
+    return json.properties || [];
+  } catch (error) {
+    console.error("❌ Erro ao fazer parse do JSON:", error);
     return [];
   }
 }
