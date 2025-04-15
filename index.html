@@ -4,131 +4,154 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hoperty | Reservas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
   <style>
-    :root {
-      --cor-principal: #1c3c4c;
-      --cor-secundaria: #3c5a68;
-      --fundo-card: rgba(255, 255, 255, 0.95);
-      --borda-radius: 20px;
-      --sombra: 0 12px 36px rgba(0, 0, 0, 0.08);
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Open Sans', sans-serif; background: #f8f9fa; color: #1c3c4c; }
+
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: white;
+      padding: 24px;
+      margin: 30px auto;
+      border-radius: 16px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+      max-width: 1100px;
+      justify-content: center;
+    }
+    .search-bar input, .search-bar select {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+    .search-bar button {
+      background: #1c3c4c;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    body {
-      font-family: 'Open Sans', sans-serif;
-      margin: 0;
-      background-color: #f4f7f8;
-      color: var(--cor-principal);
-    }
-
-    .container {
+    .listagem {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
       max-width: 1200px;
-      margin: 40px auto;
+      margin: 0 auto;
       padding: 20px;
     }
 
-    h1 {
-      text-align: center;
-      font-size: 32px;
-      margin-bottom: 30px;
-    }
-
-    .cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .card-casa {
-      background: var(--fundo-card);
-      border-radius: var(--borda-radius);
-      box-shadow: var(--sombra);
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease;
+      transition: transform 0.2s ease;
     }
-
-    .card-casa:hover {
-      transform: scale(1.02);
+    .card:hover {
+      transform: translateY(-5px);
     }
-
-    .imagem-casa {
+    .card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
     }
-
-    .info-casa {
-      padding: 20px;
+    .card-content {
+      padding: 16px;
     }
-
-    .info-casa h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
+    .card-content h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
     }
-
-    .info-casa p {
+    .card-content p {
       font-size: 14px;
-      color: var(--cor-secundaria);
-      margin-bottom: 15px;
-    }
-
-    .botao-reservar {
-      background-color: var(--cor-principal);
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Resultados da Pesquisa</h1>
-    <div class="cards-container" id="cardsContainer">
-      <!-- Cards das casas serão inseridos aqui pela API -->
-    </div>
-  </div>
+  <form class="search-bar" id="searchForm">
+    <select id="location">
+      <option value="">Localização</option>
+      <option value="Funchal">Funchal</option>
+      <option value="Santa Cruz">Santa Cruz</option>
+    </select>
+    <input type="text" id="checkin" placeholder="Check-In" />
+    <input type="text" id="checkout" placeholder="Check-Out" />
+    <input type="number" id="guests" value="2" min="1" placeholder="Hóspedes" />
+    <button type="submit">Procurar</button>
+  </form>
 
+  <section class="listagem" id="listagemAlojamentos">
+    <!-- Cards serão inseridos via JavaScript -->
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
   <script>
-    const apiKey = 'A9B7C3D2E6F1G4H8';
-    const urlParams = new URLSearchParams(window.location.search);
-    const location = urlParams.get('location') || '';
-    const checkin = urlParams.get('checkin') || '';
-    const checkout = urlParams.get('checkout') || '';
-    const guests = urlParams.get('guests') || '2';
+    const picker = new Litepicker({
+      element: document.getElementById('checkin'),
+      elementEnd: document.getElementById('checkout'),
+      singleMode: false,
+      format: 'YYYY-MM-DD'
+    });
 
-    async function fetchProperties() {
-      try {
-        const response = await fetch(`https://api.beds24.com/json/getProperties?apiKey=${apiKey}`);
-        const data = await response.json();
-        const cardsContainer = document.getElementById('cardsContainer');
-
-        data.properties.forEach(property => {
-          const card = document.createElement('div');
-          card.className = 'card-casa';
-
-          card.innerHTML = `
-            <img class="imagem-casa" src="${property.picture || 'https://via.placeholder.com/400x200'}" alt="${property.name}" />
-            <div class="info-casa">
-              <h2>${property.name}</h2>
-              <p>${property.description || 'Descrição não disponível'}</p>
-              <a class="botao-reservar" href="https://beds24.com/booking2.php?propid=${property.propertyId}&checkin=${checkin}&checkout=${checkout}&guests=${guests}" target="_blank">Reservar</a>
-            </div>
-          `;
-
-          cardsContainer.appendChild(card);
-        });
-
-      } catch (error) {
-        console.error('Erro ao buscar propriedades:', error);
+    const alojamentosMock = [
+      {
+        nome: "Bem Me Quer",
+        cidade: "Santa Cruz",
+        preco: "120",
+        estrelas: "4.8",
+        imagem: "https://a0.muscache.com/im/pictures/9b3660b6.jpg"
+      },
+      {
+        nome: "The Hideaway",
+        cidade: "Funchal",
+        preco: "95",
+        estrelas: null,
+        imagem: "https://a0.muscache.com/im/pictures/9b123abc.jpg"
       }
+    ];
+
+    function renderAlojamentos(lista) {
+      const container = document.getElementById("listagemAlojamentos");
+      container.innerHTML = "";
+
+      lista.forEach(a => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${a.imagem}" alt="${a.nome}" />
+          <div class="card-content">
+            <h3>${a.nome}</h3>
+            <p>${a.cidade}</p>
+            <p><strong>€${a.preco}</strong> / noite</p>
+            <p>${a.estrelas ? a.estrelas + ' ★' : '- ★'}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    fetchProperties();
+    // Popular os campos com parâmetros (mock inicial)
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      document.getElementById("location").value = urlParams.get("location") || "";
+      document.getElementById("checkin").value = urlParams.get("checkin") || "";
+      document.getElementById("checkout").value = urlParams.get("checkout") || "";
+      document.getElementById("guests").value = urlParams.get("guests") || "2";
+
+      renderAlojamentos(alojamentosMock);
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Aqui futuramente poderemos buscar os alojamentos reais via API
+    });
   </script>
 </body>
 </html>
