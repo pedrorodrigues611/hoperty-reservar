@@ -13,17 +13,21 @@ function Reservas() {
   });
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const location = urlParams.get('location') || '';
-    const guests = urlParams.get('guests') || '2';
-    const checkin = urlParams.get('checkin') || '';
-    const checkout = urlParams.get('checkout') || '';
+  const urlParams = new URLSearchParams(window.location.search);
+  const location = urlParams.get('location') || '';
+  const guests = urlParams.get('guests') || '2';
+  const checkin = urlParams.get('checkin') || '';
+  const checkout = urlParams.get('checkout') || '';
 
-    const searchParams = { location, guests, checkin, checkout };
-    setParams(searchParams);
+  const searchParams = { location, guests, checkin, checkout };
+  setParams(searchParams);
 
-    fetchProperties(searchParams).then(setProperties);
-  }, []);
+  fetchProperties(searchParams).then((result) => {
+    console.log("🏨 Propriedades recebidas:", result);
+    setProperties(result);
+  });
+}, []);
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
