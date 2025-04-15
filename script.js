@@ -31,7 +31,14 @@ document.addEventListener("DOMContentLoaded", function () {
   })
     .then(response => response.json())
     .then(data => {
+      console.log("🔍 Resposta da API Beds24:", data); // 👈 Adicionado
       const properties = data.properties || [];
+
+      if (properties.length === 0) {
+        container.innerHTML = "<p>Nenhum alojamento encontrado.</p>";
+        return;
+      }
+
       properties.forEach(property => {
         const card = document.createElement("div");
         card.className = "card";
@@ -39,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <img src="${property.images?.[0]?.url || 'https://via.placeholder.com/300x200'}" alt="${property.name}" />
           <div class="info">
             <h3>${property.name}</h3>
-            <p>${property.city}</p>
+            <p>${property.city || ''}</p>
             <p>${property.price || '---'} € / noite</p>
             <p>${property.rating || '-'} ★</p>
           </div>
@@ -48,6 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     })
     .catch(error => {
-      console.error("Erro ao buscar os dados dos alojamentos:", error);
+      console.error("❌ Erro ao conectar à API Beds24:", error);
     });
 });
