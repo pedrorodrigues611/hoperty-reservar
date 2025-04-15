@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Reservas from './pages/Reservas';
+import './index.css'
 
 function App() {
   return (
